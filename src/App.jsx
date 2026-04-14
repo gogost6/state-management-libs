@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useCounterStore } from "./store/useCounterStore";
+import { useRecoilState } from "recoil";
+import { counterState } from "./state/counterAtom";
 
 export default function App() {
-  const { count, increment, decrement } = useCounterStore();
+  const [count, setCount] = useRecoilState(counterState);
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,10 +39,10 @@ export default function App() {
     <div className="page">
       <div className="container">
         <div className="card hero-card">
-          <p className="eyebrow">Zustand Demo</p>
+          <p className="eyebrow">Recoil Demo</p>
           <h1>Counter + API Fetch</h1>
           <p className="subtext">
-            Small React project with Zustand state management and a real API.
+            Small React project with Recoil state and a real example API.
           </p>
 
           <div className="counter-box">
@@ -49,10 +50,14 @@ export default function App() {
             <div className="counter-value">{count}</div>
 
             <div className="button-row">
-              <button onClick={decrement}>-1</button>
-              <button className="primary" onClick={increment}>
+              <button onClick={() => setCount((prev) => prev - 1)}>-1</button>
+              <button
+                className="primary"
+                onClick={() => setCount((prev) => prev + 1)}
+              >
                 +1
               </button>
+              <button onClick={() => setCount(0)}>Reset</button>
             </div>
           </div>
         </div>
