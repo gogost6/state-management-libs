@@ -1,47 +1,29 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getPosts } from "./api/postsApi";
 import { useCounterStore } from "./store/useCounterStore";
 
 export default function App() {
-  const { count, increment, decrement } = useCounterStore();
+  const { count, increment, decrement, reset } = useCounterStore();
 
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const fetchPosts = async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/posts?_limit=5",
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch posts");
-      }
-
-      const data = await response.json();
-      setPosts(data);
-    } catch (err) {
-      setError(err.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  const {
+    data: posts,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["posts"],
+    queryFn: getPosts,
+  });
 
   return (
     <div className="page">
       <div className="container">
         <div className="card hero-card">
-          <p className="eyebrow">Zustand Demo</p>
+          <p className="eyebrow">Zustand + React Query</p>
           <h1>Counter + API Fetch</h1>
           <p className="subtext">
-            Small React project with Zustand state management and a real API.
+            Small React project with Zustand for local state and React Query for
+            server data.
           </p>
 
           <div className="counter-box">
@@ -53,6 +35,7 @@ export default function App() {
               <button className="primary" onClick={increment}>
                 +1
               </button>
+              <button onClick={reset}>Reset</button>
             </div>
           </div>
         </div>
@@ -60,17 +43,20 @@ export default function App() {
         <div className="card">
           <div className="section-head">
             <div>
-              <p className="eyebrow">Example API Fetch</p>
+              <p className="eyebrow">React Query Fetch</p>
               <h2>Latest posts</h2>
             </div>
-
-            <button onClick={fetchPosts}>Refetch</button>
           </div>
 
-          {loading && <p className="status">Loading posts...</p>}
-          {error && <p className="status error">{error}</p>}
+          {isLoading && <p className="status">Loading posts...</p>}
 
-          {!loading && !error && (
+          {isError && (
+            <p className="status error">
+              {error?.message || "Something went wrong."}
+            </p>
+          )}
+
+          {posts && (
             <div className="posts-grid">
               {posts.map((post) => (
                 <article key={post.id} className="post-card">
