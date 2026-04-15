@@ -1,8 +1,10 @@
-import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import { counterStore } from "./stores/counterStore";
+import { useSnapshot } from "valtio";
+import { counterState } from "./store/counterState";
 
-const App = observer(() => {
+export default function App() {
+  const snap = useSnapshot(counterState);
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -37,22 +39,22 @@ const App = observer(() => {
     <div className="page">
       <div className="container">
         <div className="card hero-card">
-          <p className="eyebrow">MobX Demo</p>
+          <p className="eyebrow">Valtio Demo</p>
           <h1>Counter + API Fetch</h1>
           <p className="subtext">
-            Small React project with MobX state and a simple fetch example.
+            Small React project with Valtio state and a simple fetch example.
           </p>
 
           <div className="counter-box">
             <span className="counter-label">Current value</span>
-            <div className="counter-value">{counterStore.count}</div>
+            <div className="counter-value">{snap.count}</div>
 
             <div className="button-row">
-              <button onClick={counterStore.decrement}>-1</button>
-              <button className="primary" onClick={counterStore.increment}>
+              <button onClick={counterState.decrement}>-1</button>
+              <button className="primary" onClick={counterState.increment}>
                 +1
               </button>
-              <button onClick={counterStore.reset}>Reset</button>
+              <button onClick={counterState.reset}>Reset</button>
             </div>
           </div>
         </div>
@@ -83,6 +85,4 @@ const App = observer(() => {
       </div>
     </div>
   );
-});
-
-export default App;
+}
