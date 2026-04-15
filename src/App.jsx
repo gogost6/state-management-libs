@@ -1,47 +1,23 @@
-import { useEffect, useState } from "react";
-import { useCounterStore } from "./store/useCounterStore";
+import { useMachine } from "@xstate/react";
+import { appMachine } from "./machines/appMachine";
 
 export default function App() {
-  const { count, increment, decrement } = useCounterStore();
+  const [state, send] = useMachine(appMachine);
 
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const fetchPosts = async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/posts?_limit=5",
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch posts");
-      }
-
-      const data = await response.json();
-      setPosts(data);
-    } catch (err) {
-      setError(err.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  const { count, posts, error } = state.context;
+  const isLoading = state.matches("loading");
+  const isFailure = state.matches("failure");
+  const isReady = state.matches("ready");
 
   return (
     <div className="page">
       <div className="container">
         <div className="card hero-card">
-          <p className="eyebrow">Zustand Demo</p>
+          <p className="eyebrow">XState Demo</p>
           <h1>Counter + API Fetch</h1>
           <p className="subtext">
-            Small React project with Zustand state management and a real API.
+            Small React project with a state machine for counter state and data
+            loading.
           </p>
 
           <div className="counter-box">
@@ -49,10 +25,14 @@ export default function App() {
             <div className="counter-value">{count}</div>
 
             <div className="button-row">
-              <button onClick={decrement}>-1</button>
-              <button className="primary" onClick={increment}>
+              <button onClick={() => send({ type: "DECREMENT" })}>-1</button>
+              <button
+                className="primary"
+                onClick={() => send({ type: "INCREMENT" })}
+              >
                 +1
               </button>
+              <button onClick={() => send({ type: "RESET" })}>Reset</button>
             </div>
           </div>
         </div>
@@ -64,13 +44,14 @@ export default function App() {
               <h2>Latest posts</h2>
             </div>
 
-            <button onClick={fetchPosts}>Refetch</button>
+            <button onClick={() => send({ type: "REFETCH" })}>Refetch</button>
           </div>
 
-          {loading && <p className="status">Loading posts...</p>}
-          {error && <p className="status error">{error}</p>}
+          {isLoading && <p className="status">Loading posts...</p>}
 
-          {!loading && !error && (
+          {isFailure && <p className="status error">{error}</p>}
+
+          {isReady && (
             <div className="posts-grid">
               {posts.map((post) => (
                 <article key={post.id} className="post-card">
