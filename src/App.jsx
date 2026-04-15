@@ -1,9 +1,8 @@
+import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import { useCounterStore } from "./store/useCounterStore";
+import { counterStore } from "./stores/counterStore";
 
-export default function App() {
-  const { count, increment, decrement } = useCounterStore();
-
+const App = observer(() => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -38,21 +37,22 @@ export default function App() {
     <div className="page">
       <div className="container">
         <div className="card hero-card">
-          <p className="eyebrow">Zustand Demo</p>
+          <p className="eyebrow">MobX Demo</p>
           <h1>Counter + API Fetch</h1>
           <p className="subtext">
-            Small React project with Zustand state management and a real API.
+            Small React project with MobX state and a simple fetch example.
           </p>
 
           <div className="counter-box">
             <span className="counter-label">Current value</span>
-            <div className="counter-value">{count}</div>
+            <div className="counter-value">{counterStore.count}</div>
 
             <div className="button-row">
-              <button onClick={decrement}>-1</button>
-              <button className="primary" onClick={increment}>
+              <button onClick={counterStore.decrement}>-1</button>
+              <button className="primary" onClick={counterStore.increment}>
                 +1
               </button>
+              <button onClick={counterStore.reset}>Reset</button>
             </div>
           </div>
         </div>
@@ -63,8 +63,6 @@ export default function App() {
               <p className="eyebrow">Example API Fetch</p>
               <h2>Latest posts</h2>
             </div>
-
-            <button onClick={fetchPosts}>Refetch</button>
           </div>
 
           {loading && <p className="status">Loading posts...</p>}
@@ -85,4 +83,6 @@ export default function App() {
       </div>
     </div>
   );
-}
+});
+
+export default App;
