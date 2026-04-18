@@ -41,9 +41,9 @@ jobs:
       - name: Deploy on VPS
         run: |
           ssh -o StrictHostKeyChecking=no "$VPS_USER@$VPS_HOST" "
-            echo '$GHCR_PAT' | docker login ghcr.io -u '$GHCR_USERNAME' --password-stdin &&
-            docker pull ghcr.io/${{ github.repository }}:latest &&
-            docker stop react-app || true &&
-            docker rm react-app || true &&
-            docker run -d --name react-app --restart unless-stopped -p 80:80 ghcr.io/${{ github.repository }}:latest
+          cd /opt/react-app &&
+          echo '$GHCR_PAT' | docker login ghcr.io -u '$GHCR_USERNAME' --password-stdin &&
+          docker compose pull &&
+          docker compose up -d &&
+          docker image prune -f
           "
