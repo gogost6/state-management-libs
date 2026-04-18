@@ -13,6 +13,12 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      VPS_HOST: ${{ secrets.VPS_HOST }}
+      VPS_USER: ${{ secrets.VPS_USER }}
+      VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+      GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
+      GHCR_PAT: ${{ secrets.GHCR_PAT }}
 
     steps:
       - name: Checkout code
@@ -29,23 +35,15 @@ jobs:
       - name: Setup SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
+          printf "%s" "$VPS_SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-
-      - name: Check if secrets exist
-        run: |
-          [ -n "${{ secrets.VPS_HOST }}" ] && echo "VPS_HOST exists" || echo "VPS_HOST missing"
-          [ -n "${{ secrets.VPS_USER }}" ] && echo "VPS_USER exists" || echo "VPS_USER missing"
-          [ -n "${{ secrets.VPS_SSH_KEY }}" ] && echo "VPS_SSH_KEY exists" || echo "VPS_SSH_KEY missing"
-          [ -n "${{ secrets.GHCR_USERNAME }}" ] && echo "GHCR_USERNAME exists" || echo "GHCR_USERNAME missing"
-          [ -n "${{ secrets.GHCR_PAT }}" ] && echo "GHCR_PAT exists" || echo "GHCR_PAT missing"
 
       - name: Deploy on VPS
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-            docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} -p ${{ secrets.GHCR_PAT }}
-            docker pull ghcr.io/${{ github.repository }}:latest
-            docker stop react-app || true
-            docker rm react-app || true
+          ssh -o StrictHostKeyChecking=no "$VPS_USER@$VPS_HOST" "
+            echo '$GHCR_PAT' | docker login ghcr.io -u '$GHCR_USERNAME' --password-stdin &&
+            docker pull ghcr.io/${{ github.repository }}:latest &&
+            docker stop react-app || true &&
+            docker rm react-app || true &&
             docker run -d --name react-app --restart unless-stopped -p 80:80 ghcr.io/${{ github.repository }}:latest
-          EOF
+          "
