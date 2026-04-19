@@ -19,6 +19,7 @@ jobs:
       VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
       GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
       GHCR_PAT: ${{ secrets.GHCR_PAT }}
+      VITE_PUBLIC_API_URL: ${{ secrets.VITE_PUBLIC_API_URL }}
 
     steps:
       - name: Checkout code
@@ -29,7 +30,7 @@ jobs:
 
       - name: Build and push image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}:latest .
+          docker build --build-arg VITE_PUBLIC_API_URL=$VITE_PUBLIC_API_URL -t ghcr.io/${{ github.repository }}:latest .
           docker push ghcr.io/${{ github.repository }}:latest
 
       - name: Setup SSH key
