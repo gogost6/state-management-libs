@@ -6,7 +6,27 @@ export default function App() {
   const count = useSelector((state) => state.counter.value);
   const dispatch = useDispatch();
 
-  const { data: posts, isLoading, isError } = useGetPostsQuery();
+  const { data: posts, isLoading, isError, refetch } = useGetPostsQuery();
+
+  const createPost = async (formData) => {
+    const title = formData.get("title");
+    const body = formData.get("body");
+
+    try {
+      await fetch(import.meta.env.VITE_PUBLIC_API_URL + "/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, body }),
+      });
+      alert("Post created successfully!");
+      refetch();
+    } catch (error) {
+      console.error("Error creating post:", error);
+      alert("Failed to create post.");
+    }
+  };
 
   return (
     <div className="page">
@@ -59,6 +79,35 @@ export default function App() {
             </div>
           )}
         </div>
+        <form action={createPost} className="card post-form">
+          <p className="eyebrow">Submit content</p>
+          <h2>Create a new post</h2>
+          <div className="form-field">
+            <label htmlFor="title">Title</label>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              placeholder="Enter a title…"
+              required
+            />
+          </div>
+
+          <div className="form-field">
+            <label htmlFor="body">Body</label>
+            <textarea
+              name="body"
+              id="body"
+              rows="4"
+              placeholder="Write something…"
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" className="primary form-submit">
+            Create Post
+          </button>
+        </form>
       </div>
     </div>
   );
