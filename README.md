@@ -1,3 +1,37 @@
+# State Management Libraries — React + Vite
+
+A demo React app showcasing different state management solutions. Each library lives on its own branch so you can compare implementations side by side.
+
+## Branches
+
+| Branch                      | Library                   |
+| --------------------------- | ------------------------- |
+| `main`                      | Redux Toolkit + RTK Query |
+| `with-zustand`              | Zustand                   |
+| `with-tanstack-react-query` | TanStack React Query      |
+| `with-recoil-atom`          | Recoil                    |
+| `with-jotai`                | Jotai                     |
+| `with-mobx`                 | MobX                      |
+| `with-valtio`               | Valtio                    |
+| `with-xstate`               | XState                    |
+
+## Live Demo
+
+The app is deployed at **[vps.moqtasvatba.online](http://vps.moqtasvatba.online)**. using
+a Virtual Private Server, Docker and nginx!
+
+The `VITE_PUBLIC_API_URL` is a Java Spring Boot application which is also hosted on the VPS
+using the **[vpsapi.moqtasvatba.online](http://vpsapi.moqtasvatba.online)**
+
+## Local Development
+
+```bash
+npm install
+npm run dev
+```
+
+Default stuff
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -10,7 +44,3 @@ Currently, two official plugins are available:
 ## React Compiler
 
 The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
