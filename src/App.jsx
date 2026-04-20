@@ -1,12 +1,36 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment, reset } from "./features/counter/counterSlice";
-import { useGetPostsQuery } from "./features/posts/postsApi";
+import {
+  useDeletePostMutation,
+  useGetPostsQuery,
+  useUpdatePostMutation,
+} from "./features/posts/postsApi";
 
 export default function App() {
   const count = useSelector((state) => state.counter.value);
   const dispatch = useDispatch();
 
   const { data: posts, isLoading, isError, refetch } = useGetPostsQuery();
+  const [updatePost] = useUpdatePostMutation();
+  const [deletePost] = useDeletePostMutation();
+
+  const [editingId, setEditingId] = useState(null);
+  const [editValues, setEditValues] = useState({ title: "", body: "" });
+
+  const startEdit = (post) => {
+    setEditingId(post.id);
+    setEditValues({ title: post.title, body: post.body });
+  };
+
+  const cancelEdit = () => setEditingId(null);
+
+  const saveEdit = async (id) => {
+    await updatePost({ id, ...editValues });
+    setEditingId(null);
+  };
+
+  const handleDelete = (id) => deletePost(id);
 
   const createPost = async (formData) => {
     const title = formData.get("title");
@@ -69,13 +93,67 @@ export default function App() {
 
           {posts && (
             <div className="posts-grid">
-              {posts.map((post) => (
-                <article key={post.id} className="post-card">
-                  <span className="post-id">#{post.id}</span>
-                  <h3>{post.title}</h3>
-                  <p>{post.body}</p>
-                </article>
-              ))}
+              {posts.map((post) =>
+                editingId === post.id ? (
+                  <article
+                    key={post.id}
+                    className="post-card post-card--editing"
+                  >
+                    <span className="post-id">#{post.id}</span>
+                    <div className="form-field">
+                      <label>Title</label>
+                      <input
+                        value={editValues.title}
+                        onChange={(e) =>
+                          setEditValues((v) => ({
+                            ...v,
+                            title: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <div className="form-field">
+                      <label>Body</label>
+                      <textarea
+                        rows="3"
+                        value={editValues.body}
+                        onChange={(e) =>
+                          setEditValues((v) => ({ ...v, body: e.target.value }))
+                        }
+                      />
+                    </div>
+                    <div className="post-card-actions">
+                      <button onClick={cancelEdit}>Cancel</button>
+                      <button
+                        className="primary"
+                        onClick={() => saveEdit(post.id)}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </article>
+                ) : (
+                  <article key={post.id} className="post-card">
+                    <span className="post-id">#{post.id}</span>
+                    <h3>{post.title}</h3>
+                    <p>{post.body}</p>
+                    <div className="post-card-actions">
+                      <button
+                        className="btn-edit"
+                        onClick={() => startEdit(post)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn-delete"
+                        onClick={() => handleDelete(post.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </article>
+                ),
+              )}
             </div>
           )}
         </div>
