@@ -270,3 +270,216 @@ h2 {
   font-size: 1rem;
   border-radius: 14px;
 }
+
+/* ── Auth ──────────────────────────────────────────────── */
+.auth-card {
+  display: grid;
+  gap: 20px;
+}
+
+.tab-row {
+  display: flex;
+  gap: 8px;
+}
+
+.tab-btn {
+  flex: 1;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.tab-btn.active {
+  background: rgba(124, 92, 255, 0.25);
+  color: #b39dff;
+}
+
+.auth-form {
+  display: grid;
+  gap: 16px;
+}
+
+/* ── Comments ──────────────────────────────────────────── */
+.comments-section {
+  margin-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.comments-title {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.75;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.comments-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.comment-item {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.comment-item p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.comment-item textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f5f7fb;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.comment-actions button {
+  padding: 0.28rem 0.7rem;
+  font-size: 0.78rem;
+  border-radius: 8px;
+}
+
+.comment-form {
+  display: flex;
+  gap: 8px;
+}
+
+.comment-form input {
+  flex: 1;
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f5f7fb;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.comment-form button {
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 10px;
+}
+
+.btn-comments {
+  background: rgba(0, 194, 255, 0.1);
+  color: #7ee8ff;
+}
+
+.btn-comments:hover {
+  background: rgba(0, 194, 255, 0.22);
+}
+
+.post-owner {
+  font-size: 0.78rem !important;
+  opacity: 0.5 !important;
+  margin-top: 4px !important;
+}
+
+/* ── Cat ───────────────────────────────────────────────── */
+.cat-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.cat-tag-form {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.cat-tag-form input {
+  flex: 1;
+  padding: 0.65rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f5f7fb;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.cat-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.cat-result {
+  display: grid;
+  gap: 8px;
+}
+
+.cat-img {
+  max-width: 300px;
+  max-height: 280px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── Account ───────────────────────────────────────────── */
+.account-forms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.account-form {
+  display: grid;
+  gap: 14px;
+}
+
+.account-form h3 {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* ── Pagination ────────────────────────────────────────── */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-controls button {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  border-radius: 10px;
+}
+
+.pagination-controls button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
