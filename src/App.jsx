@@ -7,6 +7,7 @@ import PostComments from "./components/PostComments";
 import { useLogoutMutation } from "./features/auth/authApi";
 import {
   clearCredentials,
+  selectCurrentUserEmail,
   selectIsAuthenticated,
 } from "./features/auth/authSlice";
 import { decrement, increment, reset } from "./features/counter/counterSlice";
@@ -27,6 +28,7 @@ export default function App() {
   const posts = pageData?.content ?? [];
   const totalPages = pageData?.totalPages ?? 1;
 
+  const currentUserEmail = useSelector(selectCurrentUserEmail);
   const [createPost] = useCreatePostMutation();
   const [updatePost] = useUpdatePostMutation();
   const [deletePost] = useDeletePostMutation();
@@ -191,18 +193,22 @@ export default function App() {
                           ? "Hide Comments"
                           : "Comments"}
                       </button>
-                      <button
-                        className="btn-edit"
-                        onClick={() => startEdit(post)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="btn-delete"
-                        onClick={() => handleDelete(post.id)}
-                      >
-                        Delete
-                      </button>
+                      {post.ownerEmail === currentUserEmail && (
+                        <>
+                          <button
+                            className="btn-edit"
+                            onClick={() => startEdit(post)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn-delete"
+                            onClick={() => handleDelete(post.id)}
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
                     </div>
                     {openCommentsId === post.id && (
                       <PostComments postId={post.id} />
