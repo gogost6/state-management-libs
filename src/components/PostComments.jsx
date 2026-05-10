@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectCurrentUserEmail } from "../features/auth/authSlice";
 import {
   useAddCommentMutation,
   useDeleteCommentMutation,
@@ -8,6 +10,7 @@ import {
 
 export default function PostComments({ postId }) {
   const { data: comments, isLoading } = useGetCommentsByPostIdQuery(postId);
+  const currentUserEmail = useSelector(selectCurrentUserEmail);
   const [addComment] = useAddCommentMutation();
   const [updateComment] = useUpdateCommentMutation();
   const [deleteComment] = useDeleteCommentMutation();
@@ -59,17 +62,22 @@ export default function PostComments({ postId }) {
             ) : (
               <li key={c.id} className="comment-item">
                 <p>{c.content}</p>
-                <div className="comment-actions">
-                  <button className="btn-edit" onClick={() => startEdit(c)}>
-                    Edit
-                  </button>
-                  <button
-                    className="btn-delete"
-                    onClick={() => deleteComment(c.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
+                {c.ownerEmail && (
+                  <span className="comment-owner">{c.ownerEmail}</span>
+                )}
+                {c.ownerEmail === currentUserEmail && (
+                  <div className="comment-actions">
+                    <button className="btn-edit" onClick={() => startEdit(c)}>
+                      Edit
+                    </button>
+                    <button
+                      className="btn-delete"
+                      onClick={() => deleteComment(c.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </li>
             ),
           )}

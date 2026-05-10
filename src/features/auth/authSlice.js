@@ -37,4 +37,16 @@ const authSlice = createSlice({
 export const { setCredentials, clearCredentials } = authSlice.actions;
 export const selectAccessToken = (state) => state.auth.accessToken;
 export const selectIsAuthenticated = (state) => !!state.auth.accessToken;
+export const selectCurrentUserEmail = (state) => {
+  const token = state.auth.accessToken;
+  if (!token) return null;
+  try {
+    const payload = JSON.parse(
+      atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")),
+    );
+    return payload.sub ?? null;
+  } catch {
+    return null;
+  }
+};
 export default authSlice.reducer;

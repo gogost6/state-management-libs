@@ -339,6 +339,12 @@ h2 {
   opacity: 0.85;
 }
 
+.comment-owner {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  font-style: italic;
+}
+
 .comment-item textarea {
   width: 100%;
   padding: 0.5rem 0.75rem;
