@@ -4,7 +4,9 @@ import authReducer from "../features/auth/authSlice";
 import { catApi } from "../features/cat/catApi";
 import { commentsApi } from "../features/comments/commentsApi";
 import counterReducer from "../features/counter/counterSlice";
+import { paymentApi } from "../features/payment/paymentApi";
 import { postsApi } from "../features/posts/postsApi";
+import { usersApi } from "../features/users/usersApi";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +16,8 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [commentsApi.reducerPath]: commentsApi.reducer,
     [catApi.reducerPath]: catApi.reducer,
+    [paymentApi.reducerPath]: paymentApi.reducer,
+    [usersApi.reducerPath]: usersApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -21,5 +25,7 @@ export const store = configureStore({
       authApi.middleware,
       commentsApi.middleware,
       catApi.middleware,
+      paymentApi.middleware,
+      usersApi.middleware,
     ),
 });

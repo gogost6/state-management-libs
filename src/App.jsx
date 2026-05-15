@@ -3,7 +3,9 @@ import AccountSection from "./components/AccountSection";
 import AuthSection from "./components/AuthSection";
 import CatSection from "./components/CatSection";
 import CreatePostForm from "./components/CreatePostForm";
+import PaymentSection from "./components/PaymentSection";
 import PostsSection from "./components/PostsSection";
+import UserSection from "./components/UserSection";
 import { useLogoutMutation } from "./features/auth/authApi";
 import {
   clearCredentials,
@@ -67,6 +69,8 @@ export default function App() {
         <PostsSection />
         <CreatePostForm />
         <CatSection />
+        <PaymentSection />
+        <UserSection />
         <AccountSection />
       </div>
     </div>
