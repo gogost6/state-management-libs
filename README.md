@@ -30,6 +30,13 @@ npm install
 npm run dev
 ```
 
+Create a `.env` file in the project root:
+
+```env
+VITE_PUBLIC_API_URL=http://localhost:8080/api
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
+```
+
 Default stuff
 
 # React + Vite
