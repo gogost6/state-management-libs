@@ -45,11 +45,13 @@ export default function PostComments({ postId }) {
 
   return (
     <div className="comments-section">
-      <h4 className="comments-title">Comments ({comments?.length ?? 0})</h4>
+      <h4 className="comments-title">
+        Comments ({comments?.content.length ?? 0})
+      </h4>
 
-      {comments && comments.length > 0 && (
+      {comments && comments.content.length > 0 && (
         <ul className="comments-list">
-          {comments.map((c) =>
+          {comments.content.map((c) =>
             editingId === c.id ? (
               <li key={c.id} className="comment-item">
                 <textarea
