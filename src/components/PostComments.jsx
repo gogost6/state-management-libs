@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { selectCurrentUserEmail } from "../features/auth/authSlice";
+import {
+  selectCurrentUserEmail,
+  selectIsAuthenticated,
+} from "../features/auth/authSlice";
 import {
   useAddCommentMutation,
   useDeleteCommentMutation,
@@ -10,6 +13,7 @@ import {
 
 export default function PostComments({ postId }) {
   const { data: comments, isLoading } = useGetCommentsByPostIdQuery(postId);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const currentUserEmail = useSelector(selectCurrentUserEmail);
   const [addComment] = useAddCommentMutation();
   const [updateComment] = useUpdateCommentMutation();
@@ -21,6 +25,7 @@ export default function PostComments({ postId }) {
 
   const handleAdd = async (e) => {
     e.preventDefault();
+    if (!isAuthenticated) return;
     if (!newContent.trim()) return;
     await addComment({ postId, content: newContent.trim() });
     setNewContent("");
@@ -89,9 +94,12 @@ export default function PostComments({ postId }) {
           type="text"
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
-          placeholder="Add a comment…"
+          placeholder={
+            isAuthenticated ? "Add a comment…" : "Sign in to comment…"
+          }
+          disabled={!isAuthenticated}
         />
-        <button type="submit" className="primary">
+        <button type="submit" className="primary" disabled={!isAuthenticated}>
           Post
         </button>
       </form>

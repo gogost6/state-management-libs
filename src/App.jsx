@@ -34,6 +34,8 @@ export default function App() {
       <div className="page">
         <div className="container" style={{ maxWidth: 480 }}>
           <AuthSection />
+          <PostsSection />
+          <CatSection />
         </div>
       </div>
     );

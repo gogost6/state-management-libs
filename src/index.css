@@ -48,6 +48,11 @@ button.primary {
   background: linear-gradient(135deg, #7c5cff, #00c2ff);
 }
 
+button.primary:disabled {
+  background: rgba(124, 92, 255, 0.35);
+  cursor: not-allowed;
+}
+
 .page {
   min-height: 100vh;
   padding: 40px 20px;
